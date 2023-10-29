@@ -11,7 +11,7 @@ from geopy.geocoders import Nominatim
 geocoder = Nominatim(user_agent="Research")
 
 crashes = []
-columns = ["Year", "Month", "Day", "Time", "LocationRaw", "Location", "Lat", "Long", "Country", "CountryLat", "CountryLong", "Operator", "FlightNo", 
+columns = ["Year", "Month", "Day", "Time", "LocationRaw", "Location", "Lat", "Long", "Country", "Operator", "FlightNo", 
            "Route", "ACType", "Registration", "CNLN", "AboardPassengers", "AboardCrew", "FatalitiesPassengers",
            "FatalitiesCrew", "Ground", "Summary"]
 
@@ -39,8 +39,8 @@ for pageyear in range(1920, 2023+1):
         lat = None
         lng = None
         country = None
-        countrylat = None
-        countrylng = None
+        # countrylat = None
+        # countrylng = None
 
         try:
             geocoded = geocoder.geocode(locationraw, exactly_one=True, addressdetails=True, language='en').raw
@@ -49,10 +49,10 @@ for pageyear in range(1920, 2023+1):
             lng = geocoded["lon"]
             country = geocoded["address"]["country"]
 
-            if country:
-                countrygeocoded = geocoder.geocode(geocoder.geocode(country, exactly_one=True, addressdetails=True, language='en').raw["address"]["country"], exactly_one=True, addressdetails=True, language='en').raw
-                countrylat = countrygeocoded["lat"]
-                countrylng = countrygeocoded["lon"]
+            # if country:
+            #     countrygeocoded = geocoder.geocode(geocoder.geocode(country, exactly_one=True, addressdetails=True, language='en').raw["address"]["country"], exactly_one=True, addressdetails=True, language='en').raw
+            #     countrylat = countrygeocoded["lat"]
+            #     countrylng = countrygeocoded["lon"]
 
         except:
             pass
@@ -88,8 +88,8 @@ for pageyear in range(1920, 2023+1):
 
         summary = html.fromstring(content).xpath("/html/body/div/center/table/tr[14]/td[2]/font/text()")[0]
 
-        row = [year, month, day, time, locationraw, location, lat, lng, country, countrylat, countrylng,
-               operator, flightno, route, actype, registration, cnln, aboardpassengers, aboardcrews, fatalitiespassengers, fatalitiescrews, ground, summary]
+        row = [year, month, day, time, locationraw, location, lat, lng, country, operator, flightno, route,
+               actype, registration, cnln, aboardpassengers, aboardcrews, fatalitiespassengers, fatalitiescrews, ground, summary]
 
         crashes.append(row)
   
