@@ -1,0 +1,53 @@
+name: Update Dataset
+
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+  workflow_dispatch:
+
+permissions: write-all
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Script
+        run: python scrape.py
+
+      - name: Set Env
+        run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Create New Release
+        uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: false
+          tag_name: ${{ env.NOW }}
+          release_name: ${{ env.NOW }}
+          body: Updated on ${{ env.NOW }}
+          
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Upload Output as Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          asset_path: planeCrashes.csv
+          asset_name: planeCrashes.csv
+          asset_content_type: text/csv
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
