@@ -39,6 +39,8 @@ for pageyear in range(1920, 2023+1):
         lat = None
         lng = None
         country = None
+        countrylat = None
+        countrylng = None
 
         try:
             geocoded = geocoder.geocode(locationraw, exactly_one=True, addressdetails=True, language='en').raw
@@ -47,9 +49,10 @@ for pageyear in range(1920, 2023+1):
             lng = geocoded["lon"]
             country = geocoded["address"]["country"]
 
-            countrygeocoded = geocoder.geocode(geocoder.geocode(country, exactly_one=True, addressdetails=True, language='en').raw["address"]["country"], exactly_one=True, addressdetails=True, language='en').raw
-            countrylat = countrygeocoded["lat"]
-            countrylng = countrygeocoded["lon"]
+            if country:
+                countrygeocoded = geocoder.geocode(geocoder.geocode(country, exactly_one=True, addressdetails=True, language='en').raw["address"]["country"], exactly_one=True, addressdetails=True, language='en').raw
+                countrylat = countrygeocoded["lat"]
+                countrylng = countrygeocoded["lon"]
 
         except:
             pass
