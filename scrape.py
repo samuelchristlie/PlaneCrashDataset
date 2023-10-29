@@ -85,7 +85,7 @@ for pageyear in range(1920, 2023+1):
 
         summary = html.fromstring(content).xpath("/html/body/div/center/table/tr[14]/td[2]/font/text()")[0]
 
-        row = [year, month, day, time, locationraw, location, lat, lng, country, countrylat, countrylong,
+        row = [year, month, day, time, locationraw, location, lat, lng, country, countrylat, countrylng,
                operator, flightno, route, actype, registration, cnln, aboardpassengers, aboardcrews, fatalitiespassengers, fatalitiescrews, ground, summary]
 
         crashes.append(row)
