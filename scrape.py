@@ -36,6 +36,8 @@ for pageyear in range(1920, 2023+1):
 
         locationraw = html.fromstring(content).xpath("/html/body/div/center/table/tr[4]/td[2]/font/text()")[0]
 
+        geocoded = None
+        location = None
         lat = None
         lng = None
         country = None
